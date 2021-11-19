@@ -2,6 +2,7 @@
 using Divers.Dtos.Reservation;
 using Divers.Models;
 using Divers.Services.Interfaces;
+using Hangfire;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -28,6 +29,8 @@ namespace Divers.Controllers
         [HttpPost("check")]
         public ActionResult<bool> CheckIfRoomsAvailable(Reservation model)
         {
+            if(!ModelState.IsValid)
+                return StatusCode(400, "Not valid model");
             //check if no reservations
             if (_service.CheckIfReservationsAreEmpty())
             {
@@ -52,30 +55,55 @@ namespace Divers.Controllers
         public ActionResult<bool> storePermenantReservation(AddPermenantReservationDto reservation)
         {
             if (!ModelState.IsValid)
-                return Ok("not valid model");
+                return StatusCode(400, "not valid model");
 
             var PermenantReservationToBeCreated = _mapper.Map<Reservation>(reservation);
             bool StorageStatus = _service.storePermenantReservation(PermenantReservationToBeCreated);
-            return StorageStatus;
+            //this.DelayedDeleteReservation(reservation.token);
+            return StorageStatus ? Ok("permenant reservation stored") : StatusCode(400, "permenant reservation not stored");
+        }
+
+        [HttpPost("permenant/update")]
+        public ActionResult<bool> UpdatePermenantReservation(UpdatePermenantReservationDto reservation)
+        {
+            if (!ModelState.IsValid)
+                return Ok("not valid model");
+
+            var id = _service.GetReservationByToken(reservation.token);
+
+            var PermenantReservationToBeUpdated = _mapper.Map<Reservation>(reservation);
+            var UpdateStatus = _service.UpdatePermenantReservation(id, PermenantReservationToBeUpdated);
+            return UpdateStatus ? Ok("permenant reservation updated") : Ok("nothing changed");
         }
 
         [HttpPost("cost")]
         public ActionResult<IEnumerable<Roomrate>> CalculateReservationCost(UpdateReservationDto reservation)
         {
             if (!ModelState.IsValid)
-                return Ok("not valid model");
+                return StatusCode(400, "Not valid model");
 
             var requiredReservationId = _service.GetReservationByToken(reservation.token);
-            if (requiredReservationId < 0) return NotFound();
+            if (requiredReservationId < 0) return StatusCode(404, "Reservation not found");
 
             var ReservationToBeUpdated = _mapper.Map<Reservation>(reservation);
             var UpdatedReservation = _service.UpdateReservation(requiredReservationId, ReservationToBeUpdated);
-            
-            var cost = _service.GetRoomsCost(UpdatedReservation, 75);
-            return Ok(cost);
+
+            decimal RoomsCost = _service.GetRoomsCost(UpdatedReservation, 75);
+            decimal MealsCost = _service.GetMealsCost(UpdatedReservation, 75);
+
+            return Ok(MealsCost+RoomsCost);
         }
 
 
+        [HttpGet("task")]
+        public ActionResult DelayedDeleteReservation(string token)
+        {
+            int id = _service.GetReservationByToken(token);
+            var jobId = BackgroundJob.Schedule(
+            () => _service.DeleteReservaion(id),
+            TimeSpan.FromSeconds(120));
+            return Ok("ready ??");
+        }
 
 
     }

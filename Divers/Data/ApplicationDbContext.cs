@@ -37,25 +37,80 @@ namespace Divers.Data
             );
 
             modelBuilder.Entity<Roomrate>().HasData(
-                new Roomrate { 
-                    Id = 1, Rate = 80, 
-                    Start = Convert.ToDateTime("1/1/2021 12:00:00 AM"), 
-                    End= Convert.ToDateTime("1/15/2021 12:00:00 AM"),
-                    RoomId=4
+                new Roomrate
+                {
+                    Id = 1,
+                    Rate = 80,
+                    Start = Convert.ToDateTime("1/1/2021 12:00:00 AM"),
+                    End = Convert.ToDateTime("1/15/2021 12:00:00 AM"),
+                    RoomId = 4
                 },
                 new Roomrate
                 {
-                    Id = 2, Rate = 100,
+                    Id = 2,
+                    Rate = 100,
                     Start = Convert.ToDateTime("1/16/2021 12:00:00 AM"),
                     End = Convert.ToDateTime("4/30/2021 12:00:00 AM"),
                     RoomId = 4
                 },
                 new Roomrate
                 {
-                    Id = 3, Rate = 80,
+                    Id = 3,
+                    Rate = 80,
                     Start = Convert.ToDateTime("7/1/2021 12:00:00 AM"),
                     End = Convert.ToDateTime("8/1/2021 12:00:00 AM"),
                     RoomId = 4
+                }
+            );
+
+            modelBuilder.Entity<Mealrate>().HasData(
+                new Mealrate
+                {
+                    Id = 1,
+                    Rate = 5,
+                    Start = Convert.ToDateTime("1/1/2021 12:00:00 AM"),
+                    End = Convert.ToDateTime("5/30/2021 12:00:00 AM"),
+                    MealId = 1
+                },
+                new Mealrate
+                {
+                    Id = 2,
+                    Rate = 10,
+                    Start = Convert.ToDateTime("6/1/2021 12:00:00 AM"),
+                    End = Convert.ToDateTime("12/31/2021 12:00:00 AM"),
+                    MealId = 1
+                },
+                new Mealrate
+                {
+                    Id = 3,
+                    Rate = 25,
+                    Start = Convert.ToDateTime("1/1/2021 12:00:00 AM"),
+                    End = Convert.ToDateTime("5/30/2021 12:00:00 AM"),
+                    MealId = 2
+                },
+                new Mealrate
+                {
+                    Id = 4,
+                    Rate = 25,
+                    Start = Convert.ToDateTime("6/1/2021 12:00:00 AM"),
+                    End = Convert.ToDateTime("12/31/2021 12:00:00 AM"),
+                    MealId = 2
+                },
+                new Mealrate
+                {
+                    Id = 5,
+                    Rate = 25,
+                    Start = Convert.ToDateTime("1/1/2021 12:00:00 AM"),
+                    End = Convert.ToDateTime("5/30/2021 12:00:00 AM"),
+                    MealId = 3
+                },
+                new Mealrate
+                {
+                    Id = 6,
+                    Rate = 30,
+                    Start = Convert.ToDateTime("6/1/2021 12:00:00 AM"),
+                    End = Convert.ToDateTime("12/31/2021 12:00:00 AM"),
+                    MealId = 3
                 }
             );
         }

@@ -12,9 +12,11 @@ namespace Divers.Profiles
     {
             public ReservationsProfile()
             {
+                CreateMap<CheckRoomForReservationDto, Reservation>();
                 CreateMap<AddPermenantReservationDto, Reservation>();
                 CreateMap<UpdateReservationDto, Reservation>();
-            }
+                CreateMap<UpdatePermenantReservationDto, Reservation>();
+        }
     }
 
 }

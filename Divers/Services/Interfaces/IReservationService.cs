@@ -15,6 +15,9 @@ namespace Divers.Services.Interfaces
         bool storePermenantReservation(Reservation model);
         int GetReservationByToken(string token);
         Reservation UpdateReservation(int id, Reservation reservation);
+        bool UpdatePermenantReservation(int id, Reservation reservation);
         decimal GetRoomsCost(Reservation reservation, decimal defaultRate);
+        decimal GetMealsCost(Reservation reservation, decimal defaultRate);
+        void DeleteReservaion(int id);
     }
 }

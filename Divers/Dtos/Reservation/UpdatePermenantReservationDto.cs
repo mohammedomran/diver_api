@@ -4,10 +4,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Divers.Dtos.Reservation
 {
-    public class AddPermenantReservationDto
+    public class UpdatePermenantReservationDto
     {
-        [Key]
-        public int Id { get; set; }
         [Required]
         public int AdultsNumber { get; set; }
         [Required]
@@ -20,6 +18,5 @@ namespace Divers.Dtos.Reservation
         public DateTime CheckOut { get; set; }
         [Required]
         public string token { get; set; }
-        public DateTime Date { get; set; } = DateTime.Now;
     }
 }

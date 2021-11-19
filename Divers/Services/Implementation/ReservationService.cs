@@ -73,12 +73,26 @@ namespace Divers.Services.Implementation
             return -1;
         }
 
+        public bool UpdatePermenantReservation(int id, Reservation reservation)
+        {
+            var Reservation = _context.reservations.Find(id);
+            Reservation.AdultsNumber = reservation.AdultsNumber;
+            Reservation.KidsNumber = reservation.KidsNumber;
+            Reservation.CheckIn = reservation.CheckIn;
+            Reservation.CheckOut = reservation.CheckOut;
+            Reservation.RoomId = reservation.RoomId;
+
+            return _context.SaveChanges()>0 ? true : false;
+        }
+
+
         public Reservation UpdateReservation(int id, Reservation reservation)
         {
             var Reservation = _context.reservations.Find(id);
             Reservation.Name = reservation.Name;
             Reservation.Email = reservation.Email;
             Reservation.Country = reservation.Country;
+            Reservation.MealId = reservation.MealId;
             Reservation.isCompleted = true;
 
             _context.SaveChanges();
@@ -133,6 +147,72 @@ namespace Divers.Services.Implementation
             int uncountedDays = (reservation.CheckOut-reservation.CheckIn).Days - totalCountedDays;
             RoomsCost += uncountedDays*defaultRate*requiredRoomsNumber;
             return RoomsCost;
+        }
+
+        public decimal GetMealsCost(Reservation reservation, decimal defaultRate)
+        {
+            int DailyRequiredMealsNumber = reservation.AdultsNumber + reservation.KidsNumber;
+            //get all mealrates within this interval
+            var intersectedMealsRates = _context.mealrates.Where(r => (
+                ((r.Start < reservation.CheckIn && reservation.CheckIn < r.End) ||
+                (r.Start < reservation.CheckOut && reservation.CheckOut < r.End) ||
+                (r.Start > reservation.CheckIn && reservation.CheckOut > r.End)) &&
+                (r.MealId == reservation.MealId)
+            )).OrderBy(r => r.Start);
+
+            decimal MealsCost = 0;
+            int totalCountedDays = 0;
+            DateTime currentCheckIn = reservation.CheckIn;
+
+            foreach (var mealRate in intersectedMealsRates)
+            {
+                if (currentCheckIn < mealRate.Start)
+                {
+                    currentCheckIn = mealRate.Start;
+
+                    if (reservation.CheckOut < mealRate.End)
+                    {
+                        var daysWithinRate1 = (reservation.CheckOut - currentCheckIn).Days;
+                        MealsCost += daysWithinRate1 * mealRate.Rate * DailyRequiredMealsNumber;
+                        totalCountedDays += daysWithinRate1;
+                        currentCheckIn = reservation.CheckOut;
+                    }
+                    else
+                    {
+                        var daysWithinRate2 = (mealRate.End - currentCheckIn).Days;
+                        MealsCost += daysWithinRate2 * mealRate.Rate * DailyRequiredMealsNumber;
+                        totalCountedDays += daysWithinRate2;
+                        currentCheckIn = mealRate.End;
+                    }
+                }
+                else
+                {
+                    if (reservation.CheckOut < mealRate.End)
+                    {
+                        var daysWithinRate3 = (reservation.CheckOut - currentCheckIn).Days;
+                        MealsCost += daysWithinRate3 * mealRate.Rate * DailyRequiredMealsNumber;
+                        totalCountedDays += daysWithinRate3;
+                        currentCheckIn = reservation.CheckOut;
+                    }
+                    else
+                    {
+                        var daysWithinRate4 = (mealRate.End - currentCheckIn).Days;
+                        MealsCost += daysWithinRate4 * mealRate.Rate * DailyRequiredMealsNumber;
+                        totalCountedDays += daysWithinRate4;
+                        currentCheckIn = mealRate.End;
+                    }
+                }
+            }
+            int uncountedDays = (reservation.CheckOut - reservation.CheckIn).Days - totalCountedDays;
+            MealsCost += uncountedDays * defaultRate * DailyRequiredMealsNumber;
+            return MealsCost;
+        }
+
+        public void DeleteReservaion(int id)
+        {
+            var reservation = _context.reservations.FirstOrDefault(r=>r.Id==id);
+            _context.Remove(reservation);
+            _context.SaveChanges();
         }
     }
 }
