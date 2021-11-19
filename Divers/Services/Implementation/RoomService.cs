@@ -27,5 +27,10 @@ namespace Divers.Services.Implementation
         {
             return _context.rooms.FirstOrDefault(r => r.Id == roomId).Quantity;
         }
+
+        public decimal GetDefaultRateById(int id)
+        {
+            return _context.rooms.FirstOrDefault(r => r.Id == id).Default;
+        }
     }
 }

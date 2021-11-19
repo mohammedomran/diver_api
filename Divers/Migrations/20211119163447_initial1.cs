@@ -13,7 +13,8 @@ namespace Divers.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Type = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Default = table.Column<decimal>(type: "decimal(12,10)", precision: 12, scale: 10, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -26,8 +27,9 @@ namespace Divers.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Quantity = table.Column<int>(type: "int", nullable: false)
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Quantity = table.Column<int>(type: "int", maxLength: 3, nullable: false),
+                    Default = table.Column<decimal>(type: "decimal(12,10)", precision: 12, scale: 10, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -40,10 +42,10 @@ namespace Divers.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Rate = table.Column<int>(type: "int", nullable: false),
+                    Rate = table.Column<int>(type: "int", maxLength: 3, nullable: false),
+                    MealId = table.Column<int>(type: "int", nullable: false),
                     Start = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    End = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    MealId = table.Column<int>(type: "int", nullable: true)
+                    End = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -53,7 +55,7 @@ namespace Divers.Migrations
                         column: x => x.MealId,
                         principalTable: "meals",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -67,10 +69,12 @@ namespace Divers.Migrations
                     Country = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AdultsNumber = table.Column<int>(type: "int", nullable: false),
                     KidsNumber = table.Column<int>(type: "int", nullable: false),
-                    RoomId = table.Column<int>(type: "int", nullable: true),
-                    MealId = table.Column<int>(type: "int", nullable: true),
-                    Chickin = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Checkout = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    RoomId = table.Column<int>(type: "int", nullable: false),
+                    MealId = table.Column<int>(type: "int", nullable: false),
+                    CheckIn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CheckOut = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    isCompleted = table.Column<bool>(type: "bit", nullable: false),
+                    token = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -81,13 +85,13 @@ namespace Divers.Migrations
                         column: x => x.MealId,
                         principalTable: "meals",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_reservations_rooms_RoomId",
                         column: x => x.RoomId,
                         principalTable: "rooms",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -96,10 +100,10 @@ namespace Divers.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Rate = table.Column<int>(type: "int", nullable: false),
+                    Rate = table.Column<int>(type: "int", maxLength: 3, nullable: false),
+                    RoomId = table.Column<int>(type: "int", nullable: false),
                     Start = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    End = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    RoomId = table.Column<int>(type: "int", nullable: true)
+                    End = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -109,19 +113,57 @@ namespace Divers.Migrations
                         column: x => x.RoomId,
                         principalTable: "rooms",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "meals",
+                columns: new[] { "Id", "Default", "Type" },
+                values: new object[,]
+                {
+                    { 1, 75m, "Half Board " },
+                    { 2, 75m, "Full Board " },
+                    { 3, 75m, "All Inclusive" }
                 });
 
             migrationBuilder.InsertData(
                 table: "rooms",
-                columns: new[] { "Id", "Quantity", "Type" },
+                columns: new[] { "Id", "Default", "Quantity", "Type" },
                 values: new object[,]
                 {
-                    { 4, 15, "Standard" },
-                    { 1, 15, "Sea view" },
-                    { 2, 15, "Garden view" },
-                    { 3, 15, "Royal suite" },
-                    { 5, 15, "Bool" }
+                    { 4, 75m, 15, "Standard" },
+                    { 1, 75m, 15, "Sea view" },
+                    { 2, 75m, 15, "Garden view" },
+                    { 3, 75m, 15, "Royal suite" },
+                    { 5, 75m, 15, "Bool View" },
+                    { 6, 75m, 15, "Connecting" },
+                    { 7, 75m, 15, "Villa" },
+                    { 8, 75m, 15, "Studio" },
+                    { 9, 75m, 15, "President suite" },
+                    { 10, 75m, 15, "Hollywood Twin" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "mealrates",
+                columns: new[] { "Id", "End", "MealId", "Rate", "Start" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2021, 5, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, 5, new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 2, new DateTime(2021, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, 10, new DateTime(2021, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 3, new DateTime(2021, 5, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), 2, 25, new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 4, new DateTime(2021, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), 2, 25, new DateTime(2021, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 5, new DateTime(2021, 5, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), 3, 25, new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 6, new DateTime(2021, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), 3, 30, new DateTime(2021, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                });
+
+            migrationBuilder.InsertData(
+                table: "roomrates",
+                columns: new[] { "Id", "End", "Rate", "RoomId", "Start" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2021, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), 80, 4, new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 2, new DateTime(2021, 4, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), 100, 4, new DateTime(2021, 1, 16, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 3, new DateTime(2021, 8, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 80, 4, new DateTime(2021, 7, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
                 });
 
             migrationBuilder.CreateIndex(

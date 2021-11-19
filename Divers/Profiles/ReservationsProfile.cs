@@ -16,7 +16,7 @@ namespace Divers.Profiles
                 CreateMap<AddPermenantReservationDto, Reservation>();
                 CreateMap<UpdateReservationDto, Reservation>();
                 CreateMap<UpdatePermenantReservationDto, Reservation>();
-        }
+            }
     }
 
 }

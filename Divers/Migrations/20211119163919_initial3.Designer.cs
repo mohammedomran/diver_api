@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Divers.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211118142032_initial7")]
-    partial class initial7
+    [Migration("20211119163919_initial3")]
+    partial class initial3
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -28,7 +28,12 @@ namespace Divers.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
+                    b.Property<decimal>("Default")
+                        .HasPrecision(12, 10)
+                        .HasColumnType("decimal(12,10)");
+
                     b.Property<string>("Type")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -39,16 +44,19 @@ namespace Divers.Migrations
                         new
                         {
                             Id = 1,
+                            Default = 75m,
                             Type = "Half Board "
                         },
                         new
                         {
                             Id = 2,
+                            Default = 75m,
                             Type = "Full Board "
                         },
                         new
                         {
                             Id = 3,
+                            Default = 75m,
                             Type = "All Inclusive"
                         });
                 });
@@ -63,10 +71,11 @@ namespace Divers.Migrations
                     b.Property<DateTime>("End")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("MealId")
+                    b.Property<int>("MealId")
                         .HasColumnType("int");
 
                     b.Property<int>("Rate")
+                        .HasMaxLength(3)
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Start")
@@ -77,6 +86,56 @@ namespace Divers.Migrations
                     b.HasIndex("MealId");
 
                     b.ToTable("mealrates");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            End = new DateTime(2021, 5, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            MealId = 1,
+                            Rate = 5,
+                            Start = new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 2,
+                            End = new DateTime(2021, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            MealId = 1,
+                            Rate = 10,
+                            Start = new DateTime(2021, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 3,
+                            End = new DateTime(2021, 5, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            MealId = 2,
+                            Rate = 25,
+                            Start = new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 4,
+                            End = new DateTime(2021, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            MealId = 2,
+                            Rate = 25,
+                            Start = new DateTime(2021, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 5,
+                            End = new DateTime(2021, 5, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            MealId = 3,
+                            Rate = 25,
+                            Start = new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 6,
+                            End = new DateTime(2021, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            MealId = 3,
+                            Rate = 30,
+                            Start = new DateTime(2021, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
                 });
 
             modelBuilder.Entity("Divers.Models.Reservation", b =>
@@ -138,10 +197,16 @@ namespace Divers.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
+                    b.Property<decimal>("Default")
+                        .HasPrecision(12, 10)
+                        .HasColumnType("decimal(12,10)");
+
                     b.Property<int>("Quantity")
+                        .HasMaxLength(3)
                         .HasColumnType("int");
 
                     b.Property<string>("Type")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -152,60 +217,70 @@ namespace Divers.Migrations
                         new
                         {
                             Id = 4,
+                            Default = 75m,
                             Quantity = 15,
                             Type = "Standard"
                         },
                         new
                         {
                             Id = 1,
+                            Default = 75m,
                             Quantity = 15,
                             Type = "Sea view"
                         },
                         new
                         {
                             Id = 2,
+                            Default = 75m,
                             Quantity = 15,
                             Type = "Garden view"
                         },
                         new
                         {
                             Id = 3,
+                            Default = 75m,
                             Quantity = 15,
                             Type = "Royal suite"
                         },
                         new
                         {
                             Id = 5,
+                            Default = 75m,
                             Quantity = 15,
                             Type = "Bool View"
                         },
                         new
                         {
                             Id = 6,
+                            Default = 75m,
                             Quantity = 15,
                             Type = "Connecting"
                         },
                         new
                         {
                             Id = 7,
+                            Default = 75m,
                             Quantity = 15,
                             Type = "Villa"
                         },
                         new
                         {
                             Id = 8,
+                            Default = 75m,
                             Quantity = 15,
                             Type = "Studio"
                         },
                         new
                         {
                             Id = 9,
+                            Default = 75m,
                             Quantity = 15,
                             Type = "President suite"
                         },
                         new
                         {
                             Id = 10,
+                            Default = 75m,
                             Quantity = 15,
                             Type = "Hollywood Twin"
                         });
@@ -222,9 +297,10 @@ namespace Divers.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int>("Rate")
+                        .HasMaxLength(3)
                         .HasColumnType("int");
 
-                    b.Property<int?>("RoomId")
+                    b.Property<int>("RoomId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Start")
@@ -235,13 +311,41 @@ namespace Divers.Migrations
                     b.HasIndex("RoomId");
 
                     b.ToTable("roomrates");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            End = new DateTime(2021, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Rate = 80,
+                            RoomId = 4,
+                            Start = new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 2,
+                            End = new DateTime(2021, 4, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Rate = 100,
+                            RoomId = 4,
+                            Start = new DateTime(2021, 1, 16, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 3,
+                            End = new DateTime(2021, 8, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Rate = 80,
+                            RoomId = 4,
+                            Start = new DateTime(2021, 7, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
                 });
 
             modelBuilder.Entity("Divers.Models.Mealrate", b =>
                 {
                     b.HasOne("Divers.Models.Meal", null)
                         .WithMany("Mealrates")
-                        .HasForeignKey("MealId");
+                        .HasForeignKey("MealId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Divers.Models.Reservation", b =>
@@ -265,7 +369,9 @@ namespace Divers.Migrations
                 {
                     b.HasOne("Divers.Models.Room", null)
                         .WithMany("Roomrates")
-                        .HasForeignKey("RoomId");
+                        .HasForeignKey("RoomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Divers.Models.Meal", b =>

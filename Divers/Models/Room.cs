@@ -13,7 +13,7 @@ namespace Divers.Models
         [Required]
         [MaxLength(3)]
         public int Quantity { get; set; }
-        public decimal DefaultRate { get; set; } = 75;
+        public decimal Default { get; set; } = 75;
         public List<Roomrate> Roomrates { get; set; }
         public List<Reservation> Reservations { get; set; }
     }

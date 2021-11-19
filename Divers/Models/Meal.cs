@@ -9,6 +9,7 @@ namespace Divers.Models
         public int Id { get; set; }
         [Required]
         public string Type { get; set; }
+        public decimal Default { get; set; } = 75;
         public List<Mealrate> Mealrates { get; set; }
         public List<Reservation> Reservations { get; set; }
     }

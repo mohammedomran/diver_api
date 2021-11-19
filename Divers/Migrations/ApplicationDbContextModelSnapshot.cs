@@ -26,7 +26,12 @@ namespace Divers.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
+                    b.Property<decimal>("Default")
+                        .HasPrecision(12, 10)
+                        .HasColumnType("decimal(12,10)");
+
                     b.Property<string>("Type")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -37,16 +42,19 @@ namespace Divers.Migrations
                         new
                         {
                             Id = 1,
+                            Default = 75m,
                             Type = "Half Board "
                         },
                         new
                         {
                             Id = 2,
+                            Default = 75m,
                             Type = "Full Board "
                         },
                         new
                         {
                             Id = 3,
+                            Default = 75m,
                             Type = "All Inclusive"
                         });
                 });
@@ -65,6 +73,7 @@ namespace Divers.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("Rate")
+                        .HasMaxLength(3)
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Start")
@@ -97,7 +106,7 @@ namespace Divers.Migrations
                         {
                             Id = 3,
                             End = new DateTime(2021, 5, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            MealId = 1,
+                            MealId = 2,
                             Rate = 25,
                             Start = new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
@@ -105,7 +114,7 @@ namespace Divers.Migrations
                         {
                             Id = 4,
                             End = new DateTime(2021, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            MealId = 1,
+                            MealId = 2,
                             Rate = 25,
                             Start = new DateTime(2021, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
@@ -186,13 +195,16 @@ namespace Divers.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<decimal>("DefaultRate")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<decimal>("Default")
+                        .HasPrecision(12, 10)
+                        .HasColumnType("decimal(12,10)");
 
                     b.Property<int>("Quantity")
+                        .HasMaxLength(3)
                         .HasColumnType("int");
 
                     b.Property<string>("Type")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -203,70 +215,70 @@ namespace Divers.Migrations
                         new
                         {
                             Id = 4,
-                            DefaultRate = 75m,
+                            Default = 75m,
                             Quantity = 15,
                             Type = "Standard"
                         },
                         new
                         {
                             Id = 1,
-                            DefaultRate = 75m,
+                            Default = 75m,
                             Quantity = 15,
                             Type = "Sea view"
                         },
                         new
                         {
                             Id = 2,
-                            DefaultRate = 75m,
+                            Default = 75m,
                             Quantity = 15,
                             Type = "Garden view"
                         },
                         new
                         {
                             Id = 3,
-                            DefaultRate = 75m,
+                            Default = 75m,
                             Quantity = 15,
                             Type = "Royal suite"
                         },
                         new
                         {
                             Id = 5,
-                            DefaultRate = 75m,
+                            Default = 75m,
                             Quantity = 15,
                             Type = "Bool View"
                         },
                         new
                         {
                             Id = 6,
-                            DefaultRate = 75m,
+                            Default = 75m,
                             Quantity = 15,
                             Type = "Connecting"
                         },
                         new
                         {
                             Id = 7,
-                            DefaultRate = 75m,
+                            Default = 75m,
                             Quantity = 15,
                             Type = "Villa"
                         },
                         new
                         {
                             Id = 8,
-                            DefaultRate = 75m,
+                            Default = 75m,
                             Quantity = 15,
                             Type = "Studio"
                         },
                         new
                         {
                             Id = 9,
-                            DefaultRate = 75m,
+                            Default = 75m,
                             Quantity = 15,
                             Type = "President suite"
                         },
                         new
                         {
                             Id = 10,
-                            DefaultRate = 75m,
+                            Default = 75m,
                             Quantity = 15,
                             Type = "Hollywood Twin"
                         });
@@ -283,6 +295,7 @@ namespace Divers.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int>("Rate")
+                        .HasMaxLength(3)
                         .HasColumnType("int");
 
                     b.Property<int>("RoomId")

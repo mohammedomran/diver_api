@@ -10,5 +10,6 @@ namespace Divers.Services.Interfaces
     {
         IEnumerable<Room> GetRooms();
         int GetNumberOfRoomsOfType(int roomId);
+        decimal GetDefaultRateById(int id);
     }
 }

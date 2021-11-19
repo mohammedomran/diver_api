@@ -20,5 +20,9 @@ namespace Divers.Services.Implementation
         {
             return _context.meals.ToList();
         }
+        public decimal GetDefaultRateById(int id)
+        {
+            return _context.meals.FirstOrDefault(r => r.Id == id).Default;
+        }
     }
 }

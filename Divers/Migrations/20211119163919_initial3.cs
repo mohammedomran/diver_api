@@ -2,16 +2,12 @@
 
 namespace Divers.Migrations
 {
-    public partial class initial7 : Migration
+    public partial class initial3 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
                 name: "FK_reservations_meals_MealId",
-                table: "reservations");
-
-            migrationBuilder.DropColumn(
-                name: "status",
                 table: "reservations");
 
             migrationBuilder.AlterColumn<int>(
@@ -21,13 +17,6 @@ namespace Divers.Migrations
                 nullable: true,
                 oldClrType: typeof(int),
                 oldType: "int");
-
-            migrationBuilder.AddColumn<bool>(
-                name: "isCompleted",
-                table: "reservations",
-                type: "bit",
-                nullable: false,
-                defaultValue: false);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_reservations_meals_MealId",
@@ -44,10 +33,6 @@ namespace Divers.Migrations
                 name: "FK_reservations_meals_MealId",
                 table: "reservations");
 
-            migrationBuilder.DropColumn(
-                name: "isCompleted",
-                table: "reservations");
-
             migrationBuilder.AlterColumn<int>(
                 name: "MealId",
                 table: "reservations",
@@ -57,13 +42,6 @@ namespace Divers.Migrations
                 oldClrType: typeof(int),
                 oldType: "int",
                 oldNullable: true);
-
-            migrationBuilder.AddColumn<int>(
-                name: "status",
-                table: "reservations",
-                type: "int",
-                nullable: false,
-                defaultValue: 0);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_reservations_meals_MealId",

@@ -18,6 +18,6 @@ namespace Divers.Services.Interfaces
         bool UpdatePermenantReservation(int id, Reservation reservation);
         decimal GetRoomsCost(Reservation reservation, decimal defaultRate);
         decimal GetMealsCost(Reservation reservation, decimal defaultRate);
-        void DeleteReservaion(int id);
+        //void DeleteReservaion(int id);
     }
 }

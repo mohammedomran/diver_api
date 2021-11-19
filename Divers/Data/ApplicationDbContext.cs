@@ -113,6 +113,10 @@ namespace Divers.Data
                     MealId = 3
                 }
             );
+
+
+            modelBuilder.Entity<Room>().Property(e => e.Default).HasPrecision(12, 10);
+            modelBuilder.Entity<Meal>().Property(e => e.Default).HasPrecision(12, 10);
         }
 
     }

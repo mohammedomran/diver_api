@@ -208,11 +208,11 @@ namespace Divers.Services.Implementation
             return MealsCost;
         }
 
-        public void DeleteReservaion(int id)
+        /*public void DeleteReservaion(int id)
         {
             var reservation = _context.reservations.FirstOrDefault(r=>r.Id==id);
             _context.Remove(reservation);
             _context.SaveChanges();
-        }
+        }*/
     }
 }

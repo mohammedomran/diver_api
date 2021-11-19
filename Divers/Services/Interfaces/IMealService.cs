@@ -9,5 +9,6 @@ namespace Divers.Services.Interfaces
     public interface IMealService
     {
         IEnumerable<Meal> GetMeals();
+        decimal GetDefaultRateById(int id);
     }
 }

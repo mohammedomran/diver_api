@@ -88,14 +88,16 @@ namespace Divers.Controllers
             var ReservationToBeUpdated = _mapper.Map<Reservation>(reservation);
             var UpdatedReservation = _service.UpdateReservation(requiredReservationId, ReservationToBeUpdated);
 
-            decimal RoomsCost = _service.GetRoomsCost(UpdatedReservation, 75);
-            decimal MealsCost = _service.GetMealsCost(UpdatedReservation, 75);
+            decimal roomDefaultRate = _roomService.GetDefaultRateById(UpdatedReservation.RoomId);
+            decimal mealDefaultRate = _roomService.GetDefaultRateById((int)UpdatedReservation.MealId);
+            decimal RoomsCost = _service.GetRoomsCost(UpdatedReservation, roomDefaultRate);
+            decimal MealsCost = _service.GetMealsCost(UpdatedReservation, mealDefaultRate);
 
             return Ok(MealsCost+RoomsCost);
         }
 
 
-        [HttpGet("task")]
+        /*[HttpGet("task")]
         public ActionResult DelayedDeleteReservation(string token)
         {
             int id = _service.GetReservationByToken(token);
@@ -103,7 +105,7 @@ namespace Divers.Controllers
             () => _service.DeleteReservaion(id),
             TimeSpan.FromSeconds(120));
             return Ok("ready ??");
-        }
+        }*/
 
 
     }
