@@ -26,6 +26,13 @@ namespace Divers.Controllers
             _mapper = mapper;
         }
 
+        [HttpGet("{token}")]
+        public ActionResult<bool> checkIfReservationIsStored(string token) {
+            if ((int)_service.GetReservationByToken(token) > 0)
+                return Ok("reservation found");
+            return NotFound("reservation not found");
+
+        }
         [HttpPost("check")]
         public ActionResult<bool> CheckIfRoomsAvailable(Reservation model)
         {
@@ -72,6 +79,10 @@ namespace Divers.Controllers
             var id = _service.GetReservationByToken(reservation.token);
 
             var PermenantReservationToBeUpdated = _mapper.Map<Reservation>(reservation);
+            
+            if (id < 0)
+                _service.storePermenantReservation(PermenantReservationToBeUpdated);
+
             var UpdateStatus = _service.UpdatePermenantReservation(id, PermenantReservationToBeUpdated);
             return UpdateStatus ? Ok("permenant reservation updated") : Ok("nothing changed");
         }
