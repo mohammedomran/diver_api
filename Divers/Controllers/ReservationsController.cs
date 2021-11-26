@@ -66,7 +66,7 @@ namespace Divers.Controllers
 
             var PermenantReservationToBeCreated = _mapper.Map<Reservation>(reservation);
             bool StorageStatus = _service.storePermenantReservation(PermenantReservationToBeCreated);
-            //this.DelayedDeleteReservation(reservation.token);
+            this.DelayedDeleteReservation(reservation.token);
             return StorageStatus ? Ok("permenant reservation stored") : StatusCode(400, "permenant reservation not stored");
         }
 
@@ -74,7 +74,7 @@ namespace Divers.Controllers
         public ActionResult<bool> UpdatePermenantReservation(UpdatePermenantReservationDto reservation)
         {
             if (!ModelState.IsValid)
-                return Ok("not valid model");
+                return StatusCode(400, "Not valid model");
 
             var id = _service.GetReservationByToken(reservation.token);
 
@@ -108,15 +108,13 @@ namespace Divers.Controllers
         }
 
 
-        /*[HttpGet("task")]
-        public ActionResult DelayedDeleteReservation(string token)
+        public void DelayedDeleteReservation(string token)
         {
             int id = _service.GetReservationByToken(token);
             var jobId = BackgroundJob.Schedule(
             () => _service.DeleteReservaion(id),
-            TimeSpan.FromSeconds(120));
-            return Ok("ready ??");
-        }*/
+            TimeSpan.FromSeconds(20));
+        }
 
 
     }
